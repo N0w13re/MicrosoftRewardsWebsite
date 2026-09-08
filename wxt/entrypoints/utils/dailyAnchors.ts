@@ -6,16 +6,24 @@
 // stays empty until the cards render (so callers wait for the set, not the header).
 export function matchDailyAnchors(root: ParentNode): HTMLAnchorElement[] {
     return [...root.querySelectorAll<HTMLAnchorElement>('div.grid > a')]
-        .filter(hasFormCode);
+        .filter(isDailyActivityAnchor);
 }
 
-function hasFormCode(anchor: HTMLAnchorElement): boolean {
+function isDailyActivityAnchor(anchor: HTMLAnchorElement): boolean {
     let url: URL;
     try {
         url = new URL(anchor.href);
     } catch {
         return false;
     }
+
+    // Promotional sweepstakes/reward cards can live in the same grid and also
+    // carry a `form` tracking parameter. They are redemption links rather than
+    // Daily Set activities, so do not open them with the daily tasks.
+    if (url.hostname === 'rewards.bing.com' && url.pathname.startsWith('/redeem/')) {
+        return false;
+    }
+
     // searchParams.has is case-sensitive and Bing uses both `form` and `FORM`.
     return url.searchParams.has('form') || url.searchParams.has('FORM');
 }

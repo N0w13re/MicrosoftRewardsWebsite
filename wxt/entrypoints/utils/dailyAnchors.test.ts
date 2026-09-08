@@ -9,6 +9,7 @@ describe('matchDailyAnchors', () => {
         <a href="https://rewards.bing.com/redeem">skip-redeem</a>
         <a href="https://www.bing.com/">skip-home</a>
         <a href="https://rewards.bing.com/redeem/sku/000434000001?">skip-sku</a>
+        <a href="https://rewards.bing.com/redeem/sku/000799036104?form=ML2Y26&amp;OCID=ML2Y26">skip-promotional-sweepstake</a>
         <a href="https://rewards.bing.com/refer?form=ML2XHD&rnoreward=1">refer</a>
         <a href="https://www.bing.com/search?q=Trip+to+Tokyo&FORM=tgrew4">tokyo</a>
         <a href="https://www.bing.com/search?q=Berlin+quiz&form=dsetqu">quiz</a>
