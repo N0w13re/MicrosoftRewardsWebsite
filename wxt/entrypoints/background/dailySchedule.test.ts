@@ -7,7 +7,7 @@ import { handleInstallOrUpdate, handleStartup, runRewards } from './dailySchedul
 import { getStorageItem, setStorageItems } from '@/entrypoints/hooks/useStorage';
 import { StorageValues } from '@/entrypoints/enums/storageValues';
 
-const DASHBOARD_URL = 'https://rewards.bing.com/dashboard';
+const DASHBOARD_URL = 'https://www.bing.com/';
 
 function trackCreatedTabs(): string[] {
   const urls: string[] = [];

@@ -2,6 +2,7 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import { useStorage } from '@/entrypoints/hooks/useStorage';
 import { useSearchProgress } from '@/entrypoints/hooks/useSearchProgress';
+import { useDailyActivityStatus } from '@/entrypoints/hooks/useDailyActivityStatus';
 import { StorageValues } from '@/entrypoints/enums/storageValues';
 import { DEFAULTS, LEVEL_SEARCHES } from '@/entrypoints/utils/settings';
 import { clearBadge } from '@/entrypoints/utils/browserAction';
@@ -20,6 +21,7 @@ function App() {
     const [openFirstResult, setOpenFirstResult] = useStorage<boolean>('openFirstResult', DEFAULTS.openFirstResult, StorageValues.SYNC);
     const [donateHover, setDonateHover] = useState(false);
     const { isLoaded, isSearching, completed, total } = useSearchProgress();
+    const dailyStatus = useDailyActivityStatus();
 
     // The "New" badge from an update is dismissed once the popup is opened — but
     // the badge doubles as the live search counter, so wait for the run state and
@@ -50,6 +52,13 @@ function App() {
 
             <div className="text-center">
                 <ManualClaimButton isSearching={isSearching} />
+                {dailyStatus && (
+                    <div role="status" style={{ fontSize: '12px', overflowWrap: 'anywhere' }}>
+                        Daily activities: {dailyStatus.phase}
+                        {dailyStatus.selected != null && ` (${dailyStatus.clicked ?? 0}/${dailyStatus.selected} clicks)`}
+                        {dailyStatus.error && <div>{dailyStatus.error.slice(0, 600)}</div>}
+                    </div>
+                )}
                 {hasRunToShow && (
                     <SearchProgressBar completed={completed} total={total} isSearching={isSearching} />
                 )}
@@ -61,8 +70,8 @@ function App() {
                     </div>
                     <div className="input-with-info">
                         <input className="form-check-input" type="checkbox" id="autoDaily" checked={autoDaily} onChange={(e) => setAutoDaily(e.target.checked)} />
-                        <label htmlFor="autoDaily">Daily set</label>
-                        <span className="tooltip-icon info" data-tooltip="Opens bing rewards tab and completes daily tasks for extra points">ℹ</span>
+                        <label htmlFor="autoDaily">Daily activities</label>
+                        <span className="tooltip-icon info" data-tooltip="Opens Bing, expands the Rewards panel and clicks pending point-bearing activities. Quizzes and puzzles may require further interaction.">ℹ</span>
                     </div>
                     <div className="input-with-info">
                         <input className="form-check-input" type="checkbox" id="openFirstResult" checked={openFirstResult} onChange={(e) => setOpenFirstResult(e.target.checked)} />
